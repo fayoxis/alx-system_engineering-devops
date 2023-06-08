@@ -1,2 +1,2 @@
-#!/bin/bash
-chown -h betty: vincent _hello
+#!/bin/bash 
+chown -h vincent:vincent _hello
