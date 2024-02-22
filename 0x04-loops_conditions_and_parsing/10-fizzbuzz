@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-# This script displays numbers from 1 to 100.
+# This script displays # from 1 to 100.
 
 for number in {1..100}
 do
-    while [ $((number % 3)) == 0 ] && [ $((number % 5)) == 0 ]
+    if [ $((number % 3)) == 0 ] && [ $((number % 5)) == 0 ]
     then
-        echo "FizzBuzz"
-    if [ $((number % 5)) == 0 ]
+        output+="FizzBuzz\n"
+    elif [ $((number % 5)) == 0 ]
     then
-        echo "Buzz"
+        output+="Buzz\n"
     elif [ $((number % 3)) == 0 ]
     then
-        echo "Fizz"
+        output+="Fizz\n"
     else
-        echo "$number"
+        output+="$number\n"
     fi
 done
+
+echo -e "$output"
