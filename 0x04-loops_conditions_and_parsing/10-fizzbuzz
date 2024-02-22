@@ -1,20 +1,7 @@
 #!/usr/bin/env bash
 # This script displays # from 1 to 100.
 
-for number in {1..100}
+for ((i = 1; i <= 10; i++))
 do
-    if [ $((number % 3)) == 0 ] && [ $((number % 5)) == 0 ]
-    then
-        output+="FizzBuzz\n"
-    elif [ $((number % 5)) == 0 ]
-    then
-        output+="Buzz\n"
-    elif [ $((number % 3)) == 0 ]
-    then
-        output+="Fizz\n"
-    else
-        output+="$number\n"
-    fi
+    echo "Best School"
 done
-
-echo -e "$output"
