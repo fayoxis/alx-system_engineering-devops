@@ -1,49 +1,30 @@
 #!/usr/bin/env bash
 # This script will manages manage_my_process
 
-PIDFILE=/var/run/my_process.pid
-RUNNING=false
-
-start() {
-    ./manage_my_process &
-    echo "$!" > "$PIDFILE"
-    RUNNING=true
-}
-
-stop() {
-    sudo kill -15 "$(cat "$PIDFILE")" && rm -f "$PIDFILE"
-    RUNNING=false
-}
-
-restart() {
-    stop
-    start
-}
-
-while true; do
-    if [ "$RUNNING" = false ]; then
-        echo "manage_my_process is not running"
-        break
-    fi
-
+if [ $# -gt 0 ]; then
     case "$1" in
-        start)
-            start
+        "start")
+            ./manage_my_process &
+            echo "$!" > /var/run/my_process.pid
             echo "manage_my_process started"
             ;;
-        stop)
-            stop
+        "stop")
             echo "manage_my_process stopped"
+            kill "$(cat /var/run/my_process.pid)"
+            rm -f /var/run/my_process.pid
             ;;
-        restart)
-            restart
+        "restart")
+            echo "manage_my_process stopped"
+            kill "$(cat /var/run/my_process.pid)"
+            rm -f /var/run/my_process.pid
+            ./manage_my_process &
+            echo "$!" > /var/run/my_process.pid
             echo "manage_my_process restarted"
             ;;
         *)
             echo "Usage: manage_my_process {start|stop|restart}"
-            break
             ;;
     esac
-done
-
-exit 0
+else
+    echo "Usage: manage_my_process {start|stop|restart}"
+fi
