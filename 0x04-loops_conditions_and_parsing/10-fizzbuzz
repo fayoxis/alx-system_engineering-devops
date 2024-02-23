@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # This script displays # from 1 to 100.
 
-i=1
-while (( i <= 100 )); do
-    if (( i % 15 == 0 )); then
+time=1
+while (( time <= 100 )); do
+    if (( time % 15 == 0 )); then
         echo 'FizzBuzz'
-    elif (( i % 3 == 0 )); then
+    elif (( time % 3 == 0 )); then
         echo 'Fizz'
-    elif (( i % 5 == 0 )); then
+    elif (( time % 5 == 0 )); then
         echo 'Buzz'
     else
-        echo $i
+        echo $time
     fi
-    (( i++ ))
+    (( time++ ))
 done
 
-unset i
+unset time
