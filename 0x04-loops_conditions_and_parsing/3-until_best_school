@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # This script  displays "Best School" 10 times
 
-i=0
-until (( i == 10 )); do echo 'Holberton School'; ((i++)); done
-unset i
+time=1
+
+until [ $time -gt 10 ]
+do
+    echo "Best School"
+    ((time++))
+done
