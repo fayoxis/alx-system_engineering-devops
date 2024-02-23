@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
-# This script is displaying "Best School" 10 times
+# This script will be displaying "Best School" 10 times
 
-counter=1
-for ((counter=1; counter<=10; counter++))
+time=1
+while [ $time -le 10 ]
 do
-    if [[ $counter == '4' ]]
+    if [[ $time == '4' ]]
     then
         echo "bad luck"
-    elif [[ $counter == '8' ]]
+    elif [[ $time == '8' ]]
     then
         echo "good luck"
     else
         echo "Best School"
     fi
+    ((time++))
 done
