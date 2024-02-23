@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # This script displats "Best School" 10 times
 
+
 counter=1
 if [ $counter -le 10 ]
 do
