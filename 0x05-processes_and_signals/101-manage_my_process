@@ -1,71 +1,49 @@
 #!/usr/bin/env bash
 # This script will manages manage_my_process
 
-is_process_running() {
-    pgrep -f ./manage_my_process > /dev/null
-    return $?
-}
+PIDFILE=/var/run/my_process.pid
+RUNNING=false
 
-start_process() {
+start() {
     ./manage_my_process &
-    sleep 1
-    is_process_running
-    if [ $? -eq 0 ]; then
-        sudo tee /var/run/my_process.pid <<< "$!"
-        return 0
-    else
-        return 1
-    fi
+    echo "$!" > "$PIDFILE"
+    RUNNING=true
 }
 
-stop_process() {
-    pkill -f ./manage_my_process
-    sleep 1
-    is_process_running
-    if [ $? -ne 0 ]; then
-        sudo rm -f /var/run/my_process.pid
-    fi
+stop() {
+    sudo kill -15 "$(cat "$PIDFILE")" && rm -f "$PIDFILE"
+    RUNNING=false
 }
 
-case "$1" in
-    start)
-        is_process_running
-        if [ $? -eq 0 ]; then
-            echo 'manage_my_process is already running'
-        else
-            start_process
-            if [ $? -eq 0 ]; then
-                echo 'manage_my_process started'
-            else
-                echo 'Failed to start manage_my_process'
-            fi
-        fi
-        ;;
-    stop)
-        is_process_running
-        if [ $? -eq 0 ]; then
-            stop_process
-            echo 'manage_my_process stopped'
-        else
-            echo 'manage_my_process is not running'
-        fi
-        ;;
-    restart)
-        is_process_running
-        if [ $? -eq 0 ]; then
-            stop_process
-        fi
-        start_process
-        if [ $? -eq 0 ]; then
-            echo 'manage_my_process restarted'
-        else
-            echo 'Failed to restart manage_my_process'
-        fi
-        ;;
-    *)
-        echo 'Usage: manage_my_process {start|stop|restart}'
-        exit 1
-        ;;
-esac
+restart() {
+    stop
+    start
+}
 
-exit $?
+while true; do
+    if [ "$RUNNING" = false ]; then
+        echo "manage_my_process is not running"
+        break
+    fi
+
+    case "$1" in
+        start)
+            start
+            echo "manage_my_process started"
+            ;;
+        stop)
+            stop
+            echo "manage_my_process stopped"
+            ;;
+        restart)
+            restart
+            echo "manage_my_process restarted"
+            ;;
+        *)
+            echo "Usage: manage_my_process {start|stop|restart}"
+            break
+            ;;
+    esac
+done
+
+exit 0
