@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # This script will manages manage_my_process
 
+FILE=/var/run/my_process.pid
 start() {
     ./manage_my_process &
     echo "$!" > "$FILE"
