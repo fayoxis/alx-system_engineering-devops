@@ -2,4 +2,4 @@
 # this is a  script thst will parses apache log files in list format
 
 myfile="apache-access.log"
-awk -F' ' '{ print $1, $9}' $myfile
+awk '{ print $1, $9}' apache-access.log
