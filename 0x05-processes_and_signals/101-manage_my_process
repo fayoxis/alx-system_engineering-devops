@@ -2,38 +2,40 @@
 # This script will manages manage_my_process
 
 while true; do
-    if [ $# -gt 0 ]; then
-        case "$1" in
-            "start")
-                ./manage_my_process &
-                touch /var/run/my_process.pid
-                echo "$!" > /var/run/my_process.pid
-                echo "manage_my_process started"
-                break
-                ;;
-            "stop")
-                echo "manage_my_process stopped"
-                kill "$(cat /var/run/my_process.pid)"
+    echo "Usage: manage_my_process {start|stop|restart}"
+
+    read -p "Enter your command: " command
+
+    case "$command" in
+        "start")
+            ./manage_my_process &
+            touch /var/run/my_process.pid
+            echo "$!" > /var/run/my_process.pid
+            echo "manage_my_process started"
+            ;;
+        "stop")
+            if [ -f "/var/run/my_process.pid" ]; then
+                process_pid=$(cat /var/run/my_process.pid)
+                kill "$process_pid"
                 rm -f /var/run/my_process.pid
-                break
-                ;;
-            "restart")
                 echo "manage_my_process stopped"
-                kill "$(cat /var/run/my_process.pid)"
+            else
+                echo "No running process found"
+            fi
+            ;;
+        "restart")
+            if [ -f "/var/run/my_process.pid" ]; then
+                process_pid=$(cat /var/run/my_process.pid)
+                kill "$process_pid"
                 rm -f /var/run/my_process.pid
-                ./manage_my_process &
-                touch /var/run/my_process.pid
-                echo "$!" > /var/run/my_process.pid
-                echo "manage_my_process restarted"
-                break
-                ;;
-            *)
-                echo "Usage: manage_my_process {start|stop|restart}"
-                break
-                ;;
-        esac
-    else
-        echo "Usage: manage_my_process {start|stop|restart}"
-        break
-    fi
+            fi
+            ./manage_my_process &
+            touch /var/run/my_process.pid
+            echo "$!" > /var/run/my_process.pid
+            echo "manage_my_process restarted"
+            ;;
+        *)
+            echo "Invalid command. Please try again."
+            ;;
+    esac
 done
