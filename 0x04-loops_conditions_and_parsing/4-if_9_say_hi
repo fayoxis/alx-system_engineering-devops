@@ -4,7 +4,7 @@
 for ((time=1; time<=10; time++))
 do
     echo "Best School"
-    if [[ "$time" == '9' ]]
+    if [ "$time" -eq 9 ]
     then
         echo "Hi"
     fi
