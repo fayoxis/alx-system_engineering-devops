@@ -2,7 +2,5 @@
 # The script will displays contents of the current directory
 # Where only part of name after the first dash is shown
 
-for _ in *
-do
-    echo "$_" | cut -f 2 -d '-'
-done
+for file in *; do
+    echo "$file" | cut -f2 -d '-'; done
