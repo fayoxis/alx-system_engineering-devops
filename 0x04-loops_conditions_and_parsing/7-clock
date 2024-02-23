@@ -10,5 +10,7 @@ while (( times < 60 ));
 do
 echo $j; ((times++));
 done
-((time++)); done
-unset time; unset times
+((time++));
+done
+unset time;
+unset times
