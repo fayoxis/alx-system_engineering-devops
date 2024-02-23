@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This scriptkill "$(pgrep -f 4-to_infinity_and_beyond)"
+# The script "$(pgrep -f 4-to_infinity_and_beyond)"
 #stops 4-to_infinity_and_beyond process.
 
 kill "$(pgrep -f 4-to_infinity_and_beyond)"
