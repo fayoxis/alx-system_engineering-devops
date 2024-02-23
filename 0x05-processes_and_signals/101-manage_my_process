@@ -1,41 +1,43 @@
 #!/usr/bin/env bash
 # This script will manages manage_my_process
 
-while true; do
+valid_command=false
+
+while [ "$valid_command" = false ]; do
     echo "Usage: manage_my_process {start|stop|restart}"
 
     read -p "Enter your command: " command
 
-    case "$command" in
-        "start")
+    if [ $# -gt 0 ]; then
+        if [ "$command" == "start" ]; then
             ./manage_my_process &
             touch /var/run/my_process.pid
             echo "$!" > /var/run/my_process.pid
             echo "manage_my_process started"
-            ;;
-        "stop")
+            valid_command=true
+        elif [ "$command" == "stop" ]; then
+            echo "manage_my_process stopped"
             if [ -f "/var/run/my_process.pid" ]; then
-                process_pid=$(cat /var/run/my_process.pid)
-                kill "$process_pid"
+                kill "$(cat /var/run/my_process.pid)"
                 rm -f /var/run/my_process.pid
-                echo "manage_my_process stopped"
             else
                 echo "No running process found"
             fi
-            ;;
-        "restart")
+            valid_command=true
+        elif [ "$command" == "restart" ]; then
+            echo "manage_my_process restarted"
             if [ -f "/var/run/my_process.pid" ]; then
-                process_pid=$(cat /var/run/my_process.pid)
-                kill "$process_pid"
+                kill "$(cat /var/run/my_process.pid)"
                 rm -f /var/run/my_process.pid
             fi
             ./manage_my_process &
             touch /var/run/my_process.pid
             echo "$!" > /var/run/my_process.pid
-            echo "manage_my_process restarted"
-            ;;
-        *)
+            valid_command=true
+        else
             echo "Invalid command. Please try again."
-            ;;
-    esac
+        fi
+    else
+        echo "Usage: manage_my_process {start|stop|restart}"
+    fi
 done
