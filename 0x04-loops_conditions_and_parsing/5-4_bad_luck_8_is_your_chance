@@ -2,7 +2,7 @@
 # This script is displaying "Best School" 10 times
 
 counter=1
-while [ $counter -le 10 ]
+for ((counter=1; counter<=10; counter++))
 do
     if [[ $counter == '4' ]]
     then
@@ -13,5 +13,4 @@ do
     else
         echo "Best School"
     fi
-    ((counter++))
 done
