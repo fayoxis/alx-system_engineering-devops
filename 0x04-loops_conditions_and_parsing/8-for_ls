@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# This script displays the content of the current directory in a list format
-# Where only the part of the name after the first dash is displayed
+# The script will displays contents of the current directory
+# Where only part of name after the first dash is shown
 
 for _ in *
 do
