@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 # This script will  display the messages when receiving signals
 
-echo $$ | sudo tee /var/run/holbertonscript.pid > /dev/null
+pid=$$
+echo $pid >> /var/run/myscript.pid
 
-cleanup() {
-    sudo rm /var/run/holbertonscript.pid
-    echo 'I hate the kill command'
-    exit
-}
+trap "echo 'I hate the kill command'; rm -rf /var/run/myscript.pid; exit" SIGTERM
+trap "echo 'Y U no love me?!'" SIGINT
+trap "rm -rf /var/run/holbertonscript.pid; exit" SIGQUIT
 
-trap "cleanup" SIGTERM
-trap "cleanup" SIGQUIT
-trap "echo 'Y U no love me?!'; exit" SIGINT
-
-while true; do
-    echo 'To infinity and beyond'
+while true
+do 
+    echo 'To infinity and beyond' 
     sleep 2
 done
