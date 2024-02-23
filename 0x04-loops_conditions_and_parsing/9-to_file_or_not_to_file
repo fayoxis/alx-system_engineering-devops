@@ -1,20 +1,18 @@
 #!/usr/bin/env bash
 # This script shows information about school file.
 
-FILE="school"
-while [[ -e "$FILE" ]]
-then
-    echo "$FILE file exists"
-    if [ -s "$FILE" ]
-    then
-        echo "$FILE file is not empty"
+if [[ -e "$FILE" ]]; then
+    echo "$FILE exists."
+    
+    if [[ -s "$FILE" ]]; then
+        echo "$FILE is not empty."
     else
-        echo "$FILE file is empty"
+        echo "$FILE is empty."
     fi
-    if [ -f "$FILE" ]
-    then
-        echo "$FILE is a regular file"
+    
+    if [[ -f "$FILE" ]]; then
+        echo "$FILE is a regular file."
     fi
 else
-    echo "$FILE file does not exist"
+    echo "$FILE does not exist."
 fi
