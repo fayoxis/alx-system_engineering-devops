@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# This script is displaying "Best School" 10 times
+# This script  displays "Best School" 10 times
 
-counter=0
-until [ $counter == 10 ]
-do
-    echo "Best School"
-    ((counter++))
+i=0
+while [[ $i -ne 10 ]]; do
+  echo 'Holberton School'
+  ((i++))
 done
+unset i
