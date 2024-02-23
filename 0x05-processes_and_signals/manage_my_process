@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# This script indefinitely writes I am alive! to the file /tmp/my_process.
+# This script will indefinitely writes on the program
+# I am alive! to the file /tmp/my_process.
 
 while :
 do
