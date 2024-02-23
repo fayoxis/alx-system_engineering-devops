@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script displays the content of the file /etc/passwd.
+# This script will displays content of the file of type /etc/passwd.
 
 while IFS=: read -r user
 do
