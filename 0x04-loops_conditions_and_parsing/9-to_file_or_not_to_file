@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# This script gives information about the school file.
+# This script shows information about school file.
 
 FILE="school"
-if [[ -e "$FILE" ]]
+while [[ -e "$FILE" ]]
 then
     echo "$FILE file exists"
     if [ -s "$FILE" ]
