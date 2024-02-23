@@ -25,27 +25,15 @@ return (0);
  */
 int main(void)
 {
-int i, pid;
+int i;
+pid_t zombie;
 
 for (i = 0; i < 5; i++)
 {
-pid = fork();
-
-if (pid == 0)
-{
-printf("Zombie process created, PID: %d\n", getpid());
+zombie = fork();
+while (!zombie)
 return (0);
-}
-else if (pid > 0)
-{
-while (pid != wait(NULL))
-;
-}
-else
-{
-perror("fork error");
-exit(1);
-}
+printf("Zombie process created, PID: %d\n", zombie);
 }
 infinite_while();
 return (0);
