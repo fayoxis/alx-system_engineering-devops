@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
-# This script displays messages when receiving signals
+# This script will  display the messages when receiving signals
 
-echo $$ > /var/run/myscript.pid
-trap 'echo "I hate the kill command"; rm -rf /var/run/myscript.pid; exit' SIGTERM
-trap 'echo "Y U no love me?!"' SIGINT
-trap 'rm -rf /var/run/myscript.pid; exit' SIGQUIT
-while :
-do
-    echo "To infinity and beyond"
+echo $$ | sudo tee /var/run/holbertonscript.pid > /dev/null
+
+cleanup() {
+    sudo rm /var/run/holbertonscript.pid
+    echo 'I hate the kill command'
+    exit
+}
+
+trap "cleanup" SIGTERM
+trap "cleanup" SIGQUIT
+trap "echo 'Y U no love me?!'; exit" SIGINT
+
+while true; do
+    echo 'To infinity and beyond'
     sleep 2
 done
