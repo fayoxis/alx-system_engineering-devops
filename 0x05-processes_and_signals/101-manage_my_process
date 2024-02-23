@@ -1,41 +1,35 @@
 #!/usr/bin/env bash
 # This script will manages manage_my_process
 
-PIDFILE=/var/run/my_process.pid
-
 start() {
-    ./manage_my_process &
-    echo "$!" > "$PIDFILE"
+        ./manage_my_process &
+	pgrep -f ./manage_my_process | sudo tee /var/run/my_process.pid > /dev/null
+        return
 }
 
 stop() {
-    sudo kill -15 "$(cat "$PIDFILE")" && rm -f "$PIDFILE"
+	pkill -f ./manage_my_process
+        sudo rm -f /var/run/my_process.pid
+        return
 }
 
-while true; do
-    echo "Enter a command (start, stop, restart, exit):"
-    read command
-
-    case "$command" in
-        start)
-            start
-            echo "manage_my_process started"
-            ;;
-        stop)
-            stop
-            echo "manage_my_process stopped"
-            ;;
-        restart)
-            stop
-            start
-            echo "manage_my_process restarted"
-            ;;
-        exit)
-            echo "Exiting manage_my_process script..."
-            exit 0
-            ;;
-        *)
-            echo "Invalid command. Usage: {start|stop|restart|exit}"
-            ;;
-    esac
-done
+case "$1" in
+    start)
+	start
+	echo 'manage_my_process started'
+        ;;
+    stop)
+	stop
+	echo 'manage_my_process stopped'
+        ;;
+    restart)
+        stop
+	start
+	echo 'manage_my_process restarted'
+        ;;
+    *)
+        echo 'Usage: manage_my_process {start|stop|restart}'
+        exit 1
+        ;;
+esac
+exit $?
