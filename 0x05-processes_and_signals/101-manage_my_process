@@ -1,33 +1,31 @@
 #!/usr/bin/env bash
 # This script will manages manage_my_process
 
-while true; do
-    echo "Enter a command (start, stop, restart):"
-    read command
+start() {
+    ./manage_my_process &
+    echo "$!" > "$FILE"
+}
 
-    if [ "$command" == "start" ]
-    then
-	    ./manage_my_process &
-	    touch /var/run/my_process.pid
-	    echo "$!" > /var/run/my_process.pid
-	    echo "manage_my_process started"
-	    break
-    elif [ "$command" == "stop" ]
-    then
-	    echo "manage_my_process stopped"
-	    kill "$(cat /var/run/my_process.pid)"
-	    rm -f /var/run/my_process.pid
-	    break
-    elif [ "$command" == "restart" ]
-    then
-	    echo "manage_my_process restarted"
-	    kill "$(cat /var/run/my_process.pid)"
-	    rm -f /var/run/my_process.pid
-	    ./manage_my_process &
-	    touch /var/run/my_process.pid
-	    echo "$!" > /var/run/my_process.pid
-	    break
-    else
-	    echo "Invalid command. Please enter start, stop, or restart."
-    fi
-done
+stop() {
+    sudo kill -15 "$(cat "$FILE")" && rm -f "$FILE"
+}
+
+case "$1" in 
+    start)
+       start
+       echo "manage_my_process started"
+       ;;
+    stop)
+       stop
+       echo "manage_my_process stopped"
+       ;;
+    restart)
+       stop
+       start
+       echo "manage_my_process restarted"
+       ;;
+    *)
+       echo "Usage: manage_my_process {start|stop|restart}"
+esac
+
+exit 0
