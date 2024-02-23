@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 # This script displays "Best School" 10 times
 
-time=1
-if [ $time -le 10 ]
+for ((time=1; time<=10; time++))
 do
     echo "Best School"
     if [[ "$time" == '9' ]]
     then
         echo "Hi"
     fi
-    ((time++))
 done
