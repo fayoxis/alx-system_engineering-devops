@@ -1,4 +1,6 @@
-$file_path = '/tmp/school'
+$tmp_dir = '/tmp'
+$file_name = 'school'
+$file_path = "${tmp_dir}/${file_name}"
 $file_mode = '0744'
 $file_owner = 'www-data'
 $file_group = 'www-data'
