@@ -1,4 +1,4 @@
-# This manifest creates a file at /tmp
+# This is a  manifest creates  at /tmp
 $tmp_dir = '/tmp'
 $file_name = 'school'
 $file_path = "${tmp_dir}/${file_name}"
