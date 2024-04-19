@@ -1,9 +1,14 @@
-# manifest to create file in tmp directory
-file { '/tmp/school':
+$file_path = '/tmp/school'
+$file_mode = '0744'
+$file_owner = 'www-data'
+$file_group = 'www-data'
+$file_content = 'I love Puppet'
+
+file { $file_path:
   ensure  => present,
-  path    => '/tmp/school',
-  mode    => '0744',
-  owner   => 'www-data',
-  group   => 'www-data',
-  content => 'I love Puppet',
+  path    => $file_path,
+  mode    => $file_mode,
+  owner   => $file_owner,
+  group   => $file_group,
+  content => $file_content,
 }
