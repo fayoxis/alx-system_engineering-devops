@@ -1,15 +1,12 @@
 # Manage SSH config file
-file_line {
-$ssh_config_path = '/etc/ssh/ssh_config'
-
-file_line { 'Turn off passwd auth':
+file_line { 'off passwd auth':
   ensure => 'present',
-  path   => $ssh_config_path,  
+  path   => '/etc/ssh/ssh_config',
   line   => '    PasswordAuthentication no',
 }
 
-file_line { 'Declare identity file':
+file_line { 'identity file':
   ensure => 'present',
-  path   => $ssh_config_path,
-  line   => '    IdentityFile ~/.ssh/school',  
+  path   => '/etc/ssh/ssh_config',
+  line   => '    IdentityFile ~/.ssh/school',
 }
