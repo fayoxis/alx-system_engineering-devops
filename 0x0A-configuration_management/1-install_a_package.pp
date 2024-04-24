@@ -6,7 +6,3 @@ package = {
   ensure   => '2.1.0',
   provider => 'pip3',
 }
-package { $package['name']:
-  ensure   => $package['ensure'],
-  provider => $package['provider'],
-}
