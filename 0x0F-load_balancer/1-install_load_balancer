@@ -30,4 +30,8 @@ listen load_balancer
 EOF
 
 # Restart haproxy using init script
-sudo /etc/init.d/haproxy restart
+if ! pgrep -c nginx &> /dev/null; then
+    sudo service nginx start
+else
+    sudo service nginx restart
+fi
