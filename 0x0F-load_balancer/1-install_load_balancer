@@ -1,24 +1,28 @@
 #!/usr/bin/env bash
-# script to install and configure HAproxy on my load balancer
+# Update the package lists
+# Install load balancer
 
-echo -e "Updating & doing some minor checks...\n"
-
-# Backup the default Nginx server configuration
-sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
+echo "Updating and doing some minor checks..."
 
 # Check and install nginx if not installed
-check_and_install() {
-    if ! command -v "$1" &> /dev/null; then
-        echo -e "    Installing: $1\n"
-        sudo apt-get update -y -qq && sudo apt-get install -y "$1" -qq
-        echo -e "\n"
+install_package() {
+    local package_name=$1
+    if ! command -v "$package_name" &>/dev/null; then
+        echo "Installing: $package_name"
+        sudo apt-get update -y -qq && sudo apt-get install -y "$package_name" -qq
+        echo
     else
-        echo -e "    $1 is already installed.\n"
+        echo "$package_name is already installed."
     fi
 }
 
-sudo apt-get update
-sudo apt-get -y install haproxy
+check_and_install nginx
+install_package haproxy
+
+echo "Setting up some minor stuff."
+
+# Backup default server config file
+sudo cp /etc/haproxy/haproxy.cfg haproxy_default.backup
 
 # Configure haproxy
 cat << EOF |sudo tee -a /etc/haproxy/haproxy.cfg
@@ -32,17 +36,14 @@ listen load_balancer
         server 434428-web-02 54.89.135.5:80 check
 EOF
 
-# Apply the new server configuration
-echo "$server_config" | sudo dd status=none of=/etc/nginx/sites-enabled/default
+echo "$server_config" | sudo dd status=none of=/etc/haproxy/haproxy.cfg
 
-# enable haproxy to started script
 echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
 
 echo "configured - Roundrobin On web-01 & web-02"
 
-# Restart haproxy using init script
-if ! pgrep -c nginx &> /dev/null; then
-    sudo service nginx start
+if ! pgrep -c haproxy &>/dev/null; then
+    sudo service haproxy start
 else
-    sudo service nginx restart
+    sudo service haproxy restart
 fi
