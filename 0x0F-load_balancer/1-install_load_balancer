@@ -3,6 +3,9 @@
 
 echo -e "Updating & doing some minor checks...\n"
 
+# Backup the default Nginx server configuration
+sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
+
 # Check and install nginx if not installed
 check_and_install() {
     if ! command -v "$1" &> /dev/null; then
@@ -28,6 +31,14 @@ listen load_balancer
         server 434428-web-01 35.153.16.18:80 check
         server 434428-web-02 54.89.135.5:80 check
 EOF
+
+# Apply the new server configuration
+echo "$server_config" | sudo dd status=none of=/etc/nginx/sites-enabled/default
+
+# enable haproxy to started script
+echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+
+echo "configured - Roundrobin On web-01 & web-02"
 
 # Restart haproxy using init script
 if ! pgrep -c nginx &> /dev/null; then
