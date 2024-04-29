@@ -1,57 +1,40 @@
 #!/usr/bin/env bash
-# script to install and configure HAproxy on load balancer server
+# script to install and configure HAproxy on my load balancer
 
-apt-get update
-apt-get -y install --no-install-recommends software-properties-common
-add-apt-repository -y ppa:vbernat/haproxy-2.4
-apt-get -y install haproxy
+echo -e "Updating & doing some minor checks...\n"
 
-# the load balancer's configuration
-DOMAIN_NAME='munyasi.tech'
-INIT_FILE='/etc/default/haproxy'
-CONFIG_FILE='/etc/haproxy/haproxy.cfg'
-HAPROXY_LB_CONFIG=\
-"
-#--$DOMAIN_NAME-params-begin--
-backend $DOMAIN_NAME-backend
-	balance roundrobin
-    server 20639-web-01 3.227.217.150:80 check
-    server 20639-web-02 3.95.27.202:80 check
+# Check and install nginx if not installed
+check_and_install() {
+    if ! command -v "$1" &> /dev/null; then
+        echo -e "    Installing: $1\n"
+        sudo apt-get update -y -qq && sudo apt-get install -y "$1" -qq
+        echo -e "\n"
+    else
+        echo -e "    $1 is already installed.\n"
+    fi
+}
 
-frontend $DOMAIN_NAME-frontend
-	bind *:80
-	mode http
+sudo apt-get update
+sudo apt-get -y install haproxy
 
-	default_backend $DOMAIN_NAME-backend
-#--$DOMAIN_NAME-params-end--
-"
+# Configure haproxy
+cat << EOF |sudo tee -a /etc/haproxy/haproxy.cfg
+listen load_balancer
+        bind :80
+        mode http
+        option httpclose
+        option forwardfor
+        balance roundrobin
+        server 197867-web-01 18.209.224.119:80 check
+        server 197867-web-02 54.157.173.122:80 check
+EOF
 
-[ -f "$INIT_FILE" ] || touch "$INIT_FILE"
-[ -f "$CONFIG_FILE" ] || touch "$CONFIG_FILE"
+# Restart haproxy using init script
+sudo /etc/init.d/haproxy restart
 
-CONFIG_WORDS=$(grep -Eco "$DOMAIN_NAME-backend" < $CONFIG_FILE)
-
-if [ "$(grep -Eco '^ENABLED=[01]$' < $INIT_FILE)" -gt 0 ]; then
-	sed -i 's/^ENABLED=0$/ENABLED=1/' "$INIT_FILE"
+# Restart Nginx if it's running, or start it if it's not
+if ! pgrep -c nginx &> /dev/null; then
+    sudo service nginx start
 else
-	echo 'ENABLED=1' >> $INIT_FILE
-fi
-
-if [ "$CONFIG_WORDS" -eq 0 ]; then
-	echo -e "$HAPROXY_LB_CONFIG" >> $CONFIG_FILE
-else
-	start_tkn="#--$DOMAIN_NAME-params-begin--"
-	end_tkn="#--$DOMAIN_NAME-params-end--"
-	a=$(grep -onE "$start_tkn" < "$CONFIG_FILE" | cut -d : -f1)
-	b=$(grep -onE "$end_tkn" < "$CONFIG_FILE" | cut -d : -f1)
-	a=$((a - 1))
-	b=$((b + 1))
-	sed -i "$a,$b"d "$CONFIG_FILE"
-	echo -en "$HAPROXY_LB_CONFIG" >> $CONFIG_FILE
-fi
-
-if [ "$(pgrep -c haproxy)" -le 0 ]; then
-	service haproxy start
-else
-	service haproxy restart
+    sudo service nginx restart
 fi
