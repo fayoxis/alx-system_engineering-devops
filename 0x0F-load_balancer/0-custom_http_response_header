@@ -13,7 +13,7 @@ sudo chmod -R 755 /var/www
 echo 'Hello World!' |sudo tee /var/www/html/index.html
 
 # create webpage for 404
-echo "thi is not a page" |sudo tee /var/www/html/custom_404.html
+echo "this is not a page" |sudo tee /var/www/html/custom_404.html
 SERVER=$(hostname)
 
 SERVER_CONFIG=\
