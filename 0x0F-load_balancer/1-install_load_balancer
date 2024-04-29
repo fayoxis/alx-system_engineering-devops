@@ -31,10 +31,3 @@ EOF
 
 # Restart haproxy using init script
 sudo /etc/init.d/haproxy restart
-
-# Restart Nginx if it's running, or start it if it's not
-if ! pgrep -c nginx &> /dev/null; then
-    sudo service nginx start
-else
-    sudo service nginx restart
-fi
