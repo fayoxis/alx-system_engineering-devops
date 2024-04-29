@@ -1,6 +1,5 @@
-# Automate the task of creating a custom HTTP header response with Puppet.
-# The name of the custom HTTP header must be X-Served-By.
-# The value of the custom HTTP header must be the hostname of the server Nginx is running on.
+# names of the custom HTTP header must be X-Served-By.
+# The value of the custom HTTP header
 
 exec {'update':
   command => '/usr/bin/apt-get update',
@@ -15,4 +14,12 @@ exec {'update':
 }
 -> exec {'start':
   command => '/usr/sbin/service nginx start',
+}
+exec {'redirect_me':
+	command => 'sed -i "24i\	rewrite ^/redirect_me https://th3-gr00t.tk/ permanent;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+file {'/var/www/html/index.html':
+	content => 'Hello World!'
 }
