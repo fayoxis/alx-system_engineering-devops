@@ -1,37 +1,44 @@
 #!/usr/bin/env bash
-# The value of the custom HTTP header must be the hostname of the server Nginx is running on
+# Update the package lists
 sudo apt-get update
+
+# Install Nginx web server
 sudo apt-get -y install nginx
 
-# configure firewell to allow request through port 80
+# Configure the firewall to allow HTTP traffic on port 80
 sudo ufw allow 'Nginx HTTP'
 
+# Create the web content directory
 sudo mkdir -p /var/www/html
 
-# change permissions to allow us to easily create files in this directory
+# Grant permissions to the web content directory
 sudo chmod -R 755 /var/www
 
-# create the index page
-echo 'Hello World!' |sudo tee /var/www/html/index.html
+# Create the index page
+echo 'Hello World!' | sudo tee /var/www/html/index.html
 
-# create a webpage for 404
-echo "Ceci n'est pas une page" |sudo tee /var/www/html/custom_404.html
+# Create a custom 404 page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
 
+# Get the hostname of the server
 SERVER=$(hostname)
 
-SERVER_CONFIG=\
-"server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-        server_name _;
-        location / {
-		add_header X-Served-By '$SERVER';
-                try_files \$uri \$uri/ =404;
-        }
+# Configure the Nginx server block
+SERVER_CONFIG="
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    location / {
+        add_header X-Served-By '$SERVER';
+        try_files \$uri \$uri/ =404;
+    }
 }"
 
+# Write the server configuration to the default Nginx site
 bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-enabled/default"
 
+# Restart the Nginx service
 sudo /etc/init.d/nginx restart
