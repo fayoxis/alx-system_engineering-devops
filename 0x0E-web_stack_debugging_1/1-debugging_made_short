@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # this script to fix nginx server
 sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
-service reload nginx
+service nginx restart
 pkill -o nginx
