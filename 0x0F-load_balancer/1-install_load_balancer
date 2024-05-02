@@ -25,7 +25,7 @@ listen load_balancer
         option httpclose
         option forwardfor
         balance roundrobin
-        server 434428-web-01 35.153.16.18:80 check
+        server 434428-web-01 100.25.137.202:80 check
         server 434428-web-02 54.89.135.5:80 check
 EOF
 
