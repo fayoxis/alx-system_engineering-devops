@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
-# DNS record information for given subdomain, or all if none provided
-subd_print ()
-{
-    echo -n "The subdomain ""$2"
-    dig "$2"".""$1" +noall +answer | awk 'NF==5 {print " is a", $(NF-1), "record and points to", $NF}'
+# domains and subdomains
+
+print_domain_subdomain () {
+    dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" "
+' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
 }
 
-if [[ $2 ]]; then
-    subd_print "$1" "$2"
-elif [[ $1 ]]; then
-    for sub_d in 'www' 'lb-01' 'web-01' 'web-02'; do
-	subd_print "$1" "$sub_d"
-	done
+if [ "$#" -eq 2 ]
+then
+    print_domain_subdomain "$2.$1" "$2"
+else
+    print_domain_subdomain "www.$1" "www"
+    print_domain_subdomain "lb-01.$1" "lb-01"
+    print_domain_subdomain "web-01.$1" "web-01"
+    print_domain_subdomain "web-02.$1" "web-02"
 fi
