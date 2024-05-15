@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# script should run the whoami command under the user passed as an argument and make sure to try your script by passing different users
+# script should run the whoami command under the user passed
 pkill -f apache2
 chown nginx:nginx /etc/nginx/nginx.conf
 chmod 700 /etc/nginx/nginx.conf
