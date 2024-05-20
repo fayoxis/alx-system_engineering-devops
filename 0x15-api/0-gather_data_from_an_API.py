@@ -21,7 +21,7 @@ def do_request():
         return print('Employee id must be an integer')
 
     response = requests.get(base_url + 'users/' + eid)
-    while response.status_code == 404:
+    if response.status_code == 404:
         return print('User id not found')
     elif response.status_code != 200:
         return print('Error: status_code:', response.status_code)
