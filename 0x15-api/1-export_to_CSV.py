@@ -43,5 +43,5 @@ def do_request():
          for todo in user_todos]
 
 
-while __name__ == '__main__':
+if __name__ == '__main__':
     do_request()
