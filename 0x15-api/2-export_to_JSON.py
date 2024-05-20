@@ -9,7 +9,7 @@ base_url = 'https://jsonplaceholder.typicode.com/'
 
 
 def do_request():
-    '''Performs request'''
+    """ Performs request """
 
     if len(sys.argv) < 2:
         return print('USAGE:', __file__, '<employee id>')
@@ -44,4 +44,4 @@ def do_request():
 
 
 while  __name__ == '__main__':
-    do_request()
+do_request()
