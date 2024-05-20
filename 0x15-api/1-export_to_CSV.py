@@ -1,53 +1,30 @@
 #!/usr/bin/python3
-"""script that fetches info about a given employee using an api
-and exports it in csv format
-"""
+"""this is  to get data from an API and convert to Json"""
+import csv
 import json
 import requests
 import sys
 
 
-base_url = 'https://jsonplaceholder.typicode.com'
+if __name__ == '__main__':
+    USER_ID = sys.argv[1]
+    url_to_user = 'https://jsonplaceholder.typicode.com/users/' + USER_ID
+    res = requests.get(url_to_user)
+    """Documentation"""
+    USERNAME = res.json().get('username')
+    """Documentation"""
+    url_to_task = url_to_user + '/todos'
+    res = requests.get(url_to_task)
+    tasks = res.json()
 
-if __name__ == "__main__":
-
-    user_id = sys.argv[1]
-
-    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
-    user_url = '{}/users?id={}'.format(base_url, user_id)
-    # print("user url is: {}".format(user_url))
-
-    # get info from api
-    response = requests.get(user_url)
-    # pull data from api
-    data = response.text
-    # parse the data into JSON format
-    data = json.loads(data)
-    # extract user data, in this case, username of employee
-    user_name = data[0].get('username')
-    # print("id is: {}".format(user_id))
-    # print("name is: {}".format(user_name))
-
-    # get user info about todo tasks
-    # e.g https://jsonplaceholder.typicode.com/users/1/todos
-    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
-    # print("tasks url is: {}".format(tasks_url))
-
-    # get info from api
-    response = requests.get(tasks_url)
-    # pull data from api
-    tasks = response.text
-    # parse the data into JSON format
-    tasks = json.loads(tasks)
-
-    # build the csv
-    builder = ""
+    dict_data = {USER_ID: []}
     for task in tasks:
-        builder += '"{}","{}","{}","{}"\n'.format(
-            user_id,
-            user_name,
-            task['completed'],  # or use get method
-            task['title']
-        )
-    with open('{}.csv'.format(user_id), 'w', encoding='UTF8') as myFile:
-        myFile.write(builder)
+        TASK_COMPLETED_STATUS = task.get('completed')
+        TASK_TITLE = task.get('title')
+        dict_data[USER_ID].append({
+                                  "task": TASK_TITLE,
+                                  "completed": TASK_COMPLETED_STATUS,
+                                  "username": USERNAME})
+    """print(dict_data)"""
+    with open('{}.json'.format(USER_ID), 'w') as f:
+        json.dump(dict_data, f)
