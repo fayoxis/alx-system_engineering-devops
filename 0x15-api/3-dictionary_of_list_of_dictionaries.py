@@ -11,12 +11,12 @@ base_url = 'https://jsonplaceholder.typicode.com/'
 def do_request():
     """ this Performs request """
     response = requests.get(base_url + 'users/')
-    while response.status_code != 200:
+    if response.status_code != 200:
         return print('Error: status_code:', response.status_code)
     users = response.json()
 
     response = requests.get(base_url + 'todos/')
-    if response.status_code != 200:
+    while response.status_code != 200:
         return print('Error: status_code:', response.status_code)
     todos = response.json()
 
