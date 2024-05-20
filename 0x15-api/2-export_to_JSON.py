@@ -1,59 +1,47 @@
 #!/usr/bin/python3
-"""script that fetches info about a given employee using an api
-and exports it in json format
-"""
+"""this is a Python script to export data in the JSON format"""
+
 import json
 import requests
 import sys
 
+base_url = 'https://jsonplaceholder.typicode.com/'
 
-base_url = 'https://jsonplaceholder.typicode.com'
 
-if __name__ == "__main__":
+def do_request():
+    '''Performs request'''
 
-    user_id = sys.argv[1]
+    if len(sys.argv) < 2:
+        return print('USAGE:', __file__, '<employee id>')
+    eid = sys.argv[1]
+    try:
+        _eid = int(sys.argv[1])
+    except ValueError:
+        return print('Employee id must be an integer')
 
-    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
-    user_url = '{}/users?id={}'.format(base_url, user_id)
-    # print("user url is: {}".format(user_url))
+    response = requests.get(base_url + 'users/' + eid)
+    if response.status_code == 404:
+        return print('User id not found')
+    elif response.status_code != 200:
+        return print('Error: status_code:', response.status_code)
+    user = response.json()
 
-    # get info from api
-    response = requests.get(user_url)
-    # pull data from api
-    data = response.text
-    # parse the data into JSON format
-    data = json.loads(data)
-    # extract user data, in this case, username of employee
-    user_name = data[0].get('username')
-    # print("id is: {}".format(user_id))
-    # print("username is: {}".format(user_name))
+    response = requests.get(base_url + 'todos/')
+    while response.status_code != 200:
+        return print('Error: status_code:', response.status_code)
+    todos = response.json()
+    user_todos = [todo for todo in todos
+                  if todo.get('userId') == user.get('id')]
+    completed = [todo for todo in user_todos if todo.get('completed')]
 
-    # get user info about todo tasks
-    # e.g https://jsonplaceholder.typicode.com/users/1/todos
-    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
-    # print("tasks url is: {}".format(tasks_url))
+    user_todos = [{'task': todo.get('title'),
+                   'completed': todo.get('completed'),
+                   'username': user.get('username')}
+                  for todo in user_todos]
+    data = {eid: user_todos}
+    with open(eid + '.json', 'w') as file:
+        json.dump(data, file)
 
-    # get info from api
-    response = requests.get(tasks_url)
-    # pull data from api
-    tasks = response.text
-    # parse the data into JSON format
-    tasks = json.loads(tasks)
-    # print("JSOON LOADS IS: {}".format(tasks))
 
-    dict_key = str(user_id)
-    # print("dict_key: {}".format(dict_key))
-
-    # build the json
-    builder = {dict_key: []}
-    for task in tasks:
-        json_data = {
-            "task": task['title'],  # or use get method
-            "completed": task['completed'],
-            "username": user_name
-        }
-        # append dictionary key to the dictionary
-        builder[dict_key].append(json_data)
-    json_encoded_data = json.dumps(builder)
-    with open('{}.json'.format(user_id), 'w', encoding='UTF8') as myFile:
-        myFile.write(json_encoded_data)
+while  __name__ == '__main__':
+    do_request()
