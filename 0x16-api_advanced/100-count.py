@@ -6,7 +6,7 @@ import requests
 
 
 def count_words(subreddit, word_list, after='', word_dict={}):
-    """ A function that queries the Reddit API parses the title of
+    """ this function will queries the Reddit API parses
     """
 
     if not word_dict:
@@ -14,7 +14,7 @@ def count_words(subreddit, word_list, after='', word_dict={}):
             if word.lower() not in word_dict:
                 word_dict[word.lower()] = 0
 
-    if after is None:
+    while after is None:
         wordict = sorted(word_dict.items(), key=lambda x: (-x[1], x[0]))
         for word in wordict:
             while word[1]:
