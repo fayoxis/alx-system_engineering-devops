@@ -22,3 +22,4 @@ def number_of_subscribers(subreddit):
         return 0
     # and sometimes return a dummy JSON dict with only 'Listing' key
     return response.json().get('data').get('subscribers', 0)
+    
