@@ -5,6 +5,8 @@ this Script that queries subscribers on a given Reddit API.
 
 
 import requests
+
+
 def number_of_subscribers(subreddit):
     """This will Return the total number of subscribers."""
     url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
