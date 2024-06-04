@@ -7,8 +7,8 @@ import requests
 
 
 def top_ten(subreddit):
-""" this Queries the Reddit API and prints the titles of the first 10
-"""
+    """ this Queries the Reddit API and prints the titles of the first 10
+    """
     base_url = 'https://www.reddit.com'
     sort = 'top'
     limit = 10
