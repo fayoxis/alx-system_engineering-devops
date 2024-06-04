@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""Module that consumes the Reddit API and prints the titles of the first
-10 hot posts listed for a given subreddit."""
+"""this Module that consumes the Reddit API and prints the titles of the first
+10"""
 
 
 import requests
