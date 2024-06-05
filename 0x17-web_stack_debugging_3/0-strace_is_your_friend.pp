@@ -1,4 +1,4 @@
-# Fixes a faulty wordpress site
+# this will Fixes a faulty wordpress site
 
 $file_to_edit = '/var/www/html/wp-settings.php'
 
