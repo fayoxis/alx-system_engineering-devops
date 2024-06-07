@@ -1,32 +1,20 @@
 #!/usr/bin/python3
-"""this Module that consumes the Reddit API and prints the titles of the first
-10"""
-
-
+'''
+    this module contains the function top_ten
+'''
 import requests
+from sys import argv
 
 
 def top_ten(subreddit):
-    """ this Queries the Reddit API and prints the titles of the first 10
-    """
-    base_url = 'https://www.reddit.com'
-    sort = 'top'
-    limit = 10
-    url = '{}/r/{}/.json?sort={}&limit={}'.format(
-        base_url, subreddit, sort, limit)
-    headers = {
-        'User-Agent':
-        'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) \
-        Gecko/20100401 Firefox/3.6.3 (FM Scene 4.6.1)'
-    }
-    response = requests.get(
-        url,
-        headers=headers,
-        allow_redirects=False
-    )
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
+    response = requests.get(url, headers=headers, allow_redirects=False)
     if response.status_code == 200:
-        for post in response.json()['data']['children'][0:10]:
+        data = response.json()
+        posts = data['data']['children']
+        for post in posts:
             print(post['data']['title'])
     else:
         print(None)
