@@ -1,5 +1,7 @@
 🧮 BOTH MANDATORY OR ADVCANCED QUESTION ANSWERED HERE  🧑
 
+
+0. My first postmortem
 :Postmortem: Resolving the Dbazz Website Downtime 💯 🧑‍⚖️
 
 It was a sudden and alarming situation when our highly popular website, Dbazz Website, which is widely used by Africans in the Diaspora to transfer money in any currency to their families back home without any hidden charges or costs, went DOWN!
@@ -52,38 +54,6 @@ Changes:
 1. Changed "ever so often" to "occasionally" to better reflect the frequency.
 2. Added "server_name" directive in the Nginx configuration blocks, which was missing.
 3. Corrected minor grammar and phrasing issues.
-
-Here's the updated version with some corrections:
-
-Issue Summary: The outage occurred on August 11, 2023, from 10:00 AM to 11:30 AM (UTC). During this period, the Nginx service was unavailable on the Ubuntu server, resulting in a complete disruption of web services. Users experienced slow page loading and were unable to access the Dbazz website hosted on the server. Approximately 85% of users were affected by the downtime.
-
-Root Cause and Resolution: The root cause of the issue was a misconfigured Nginx server configuration. The Nginx process was not listening on port 80 due to an incorrect port specification in the configuration file. As a result, incoming HTTP requests were not being properly handled.
-
-To resolve the issue, the following steps were taken:
-- Accessed the Nginx configuration file located at /etc/nginx/nginx.conf.
-- Verified the listen directive in the default server block, which was set to listen 8080 instead of listen 80.
-- Corrected the listen directive to listen 80.
-- Restarted the Nginx service using the command sudo systemctl restart nginx.
-
-Corrective and Preventative Measures: To prevent similar issues in the future, the following actions will be taken:
-
-- Implement automated configuration validation scripts to detect misconfigured settings.
-- Establish stricter code review processes for configuration changes to critical services.
-- Set up regular internal training sessions to educate team members about common misconfigurations.
-- Create a comprehensive playbook for debugging and resolving service disruptions, including common pitfalls and their solutions.
-
-In conclusion, the outage was caused by a misconfigured Nginx server that prevented it from listening on port 80, resulting in downtime for users. The incident was resolved by correcting the misconfiguration and restarting the Nginx service. Moving forward, more preventive measures will be implemented to detect and address similar issues promptly, ensuring better service availability and user experience.
-
-At Dbazz, we pride ourselves on giving the best experience to our customers, always.
-
-Thank you for taking the time to read this incident report.
-
-Changes:
-- Corrected the command to restart Nginx service (sudo systemctl restart nginx instead of sudo service nginx restart).
-- Fixed a grammatical error ("on giving" changed to "on giving").
-- Removed the unnecessary closing statement about staying tuned for more insights, as it doesn't fit the tone of an incident report.
-  # Postmortem: The Great Nginx Outage
-
 ## Issue Summary
 
 On August 11, 2023, our website experienced a significant outage from 10:00 AM to 11:30 AM UTC. During this period, the Nginx service, which is the backbone of our web server infrastructure, went down, resulting in a complete disruption of our services. Users reported slow page loading times and were ultimately unable to access our website. Approximately 85% of our user base was affected by this downtime, causing widespread frustration and potential loss of trust in our platform.
@@ -105,6 +75,7 @@ The root cause of the issue was a misconfigured Nginx server configuration, whic
 
 The root cause of the outage was a misconfigured Nginx server configuration file. Instead of listening on the default HTTP port (80), the configuration had been mistakenly set to listen on port 8080. As a result, incoming HTTP requests were not being properly handled, leading to the website becoming inaccessible.
 
+:accessibility: Make people want to read your postmortem
 To resolve the issue, the following steps were taken:
 
 1. The Nginx configuration file (`/etc/nginx/nginx.conf`) was accessed and inspected.
@@ -127,5 +98,49 @@ By implementing these measures, we aim to enhance our overall system reliability
 ## Closing Thoughts
 
 In the ever-evolving world of technology, even the smallest misconfiguration can have significant consequences. While we deeply regret the inconvenience caused to our users, this incident has served as a valuable learning experience. We remain committed to providing the best possible service and user experience, and we will continue to prioritize system stability and resilience.
+
+0. My first postmortem
+**Issue Summary**
+
+- Duration: The outage lasted for 7 hours, from 2:00 AM to 9:00 AM UTC on June 1st, 2023.
+- Impact: Our e-commerce website experienced severe slowdowns and intermittent downtime, affecting approximately 60% of our user base. Customers were unable to browse products, add items to their carts, or complete purchases during this period.
+- Root Cause: The issue was caused by a memory leak in our Nginx web server, leading to resource exhaustion and service disruption.
+
+**Timeline**
+
+- 2:15 AM - The issue was detected by our monitoring system, which flagged elevated response times and error rates on the website.
+- 2:30 AM - The on-call engineering team was alerted and began investigating the issue.
+- 3:00 AM - Initial investigations pointed to a potential database issue, but after examining logs and metrics, the team ruled out the database as the root cause.
+- 4:30 AM - The incident was escalated to the web server team, who noticed increasing memory consumption on the Nginx servers.
+- 5:45 AM - After several failed attempts to mitigate the issue by restarting Nginx and adjusting configurations, the team decided to redeploy the web servers with updated Nginx binaries.
+- 7:30 AM - The redeployment process was completed successfully, and the website gradually began to recover.
+- 9:00 AM - The website was fully operational, and the incident was resolved.
+  
+🪗Make people want to read your postmortem
+
+**Root Cause and Resolution**
+
+The root cause of the outage was a memory leak in the version of Nginx deployed on our web servers. With each incoming request, a small amount of memory was not being properly released, leading to a gradual buildup of memory consumption over time. Once the servers reached critical memory levels, Nginx became unresponsive, causing the website to slow down and eventually crash.
+
+To resolve the issue, we redeployed the web servers with an updated version of Nginx that had the memory leak fixed. Additionally, we implemented stricter memory monitoring and automatic restarts for Nginx processes exceeding configurable thresholds.
+
+**Corrective and Preventative Measures**
+
+- Conduct thorough testing and review of software updates, including third-party components like Nginx, before deploying to production environments.
+- Implement comprehensive monitoring for critical system resources (CPU, memory, disk) on all production servers, with appropriate alert thresholds and automated remediation actions.
+- Establish a robust incident management process, including clear escalation paths and communication channels, to ensure efficient coordination during outages.
+- Review and update our disaster recovery plan to minimize the impact of similar incidents in the future.
+- Regularly review and update our software stack, adhering to the latest stable releases and security patches.
+
+**ToDo List**
+
+- Patch Nginx servers across all environments with the latest stable version.
+- Configure Prometheus monitoring for Nginx memory usage, with alerts and automatic restarts.
+- Conduct a retrospective meeting to review the incident response process and identify areas for improvement.
+- Schedule periodic load testing and stress testing of the website to identify potential bottlenecks and vulnerabilities.
+- Implement a centralized logging and monitoring solution for easier troubleshooting and root cause analysis.
+
+To make this postmortem more engaging, we could include a humorous anecdote or metaphor related to the incident, or perhaps a lighthearted cartoon diagram illustrating the sequence of events. The goal is to capture the reader's attention while maintaining a professional and informative tone.
+
 BY
 Name : Arthur Tchaye I : dtchayearthur@gmail.som : Fayoxis 
