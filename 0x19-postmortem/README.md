@@ -1,7 +1,5 @@
 🧮 BOTH MANDATORY OR ADVCANCED QUESTION ANSWERED HERE  🧑
 
-
-0. My first postmortem
 :Postmortem: Resolving the Dbazz Website Downtime 💯 🧑‍⚖️
 
 It was a sudden and alarming situation when our highly popular website, Dbazz Website, which is widely used by Africans in the Diaspora to transfer money in any currency to their families back home without any hidden charges or costs, went DOWN!
@@ -75,7 +73,7 @@ The root cause of the issue was a misconfigured Nginx server configuration, whic
 
 The root cause of the outage was a misconfigured Nginx server configuration file. Instead of listening on the default HTTP port (80), the configuration had been mistakenly set to listen on port 8080. As a result, incoming HTTP requests were not being properly handled, leading to the website becoming inaccessible.
 
-:accessibility: Make people want to read your postmortem
+
 To resolve the issue, the following steps were taken:
 
 1. The Nginx configuration file (`/etc/nginx/nginx.conf`) was accessed and inspected.
@@ -99,7 +97,7 @@ By implementing these measures, we aim to enhance our overall system reliability
 
 In the ever-evolving world of technology, even the smallest misconfiguration can have significant consequences. While we deeply regret the inconvenience caused to our users, this incident has served as a valuable learning experience. We remain committed to providing the best possible service and user experience, and we will continue to prioritize system stability and resilience.
 
-0. My first postmortem
+
 **Issue Summary**
 
 - Duration: The outage lasted for 7 hours, from 2:00 AM to 9:00 AM UTC on June 1st, 2023.
@@ -116,7 +114,7 @@ In the ever-evolving world of technology, even the smallest misconfiguration can
 - 7:30 AM - The redeployment process was completed successfully, and the website gradually began to recover.
 - 9:00 AM - The website was fully operational, and the incident was resolved.
   
-🪗Make people want to read your postmortem
+
 
 **Root Cause and Resolution**
 
