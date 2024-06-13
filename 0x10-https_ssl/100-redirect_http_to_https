@@ -37,7 +37,7 @@ defaults
 backend munyasi.tech-backend
         balance roundrobin
         redirect scheme https if !{ ssl_fc }
-        server 20639-web-01 3.227.217.150:80 check
+        server 20639-web-01 52.91.146.27:80 check
         server 20639-web-02 3.95.27.202:80 check
 
 frontend www-http-munyasi.tech-frontend
