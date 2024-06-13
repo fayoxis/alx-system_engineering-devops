@@ -47,5 +47,5 @@ frontend efurising-frontend-https
 
 backend efurising-backend
         balance roundrobin
-        server 434428-web-01 54.237.51.248:80 check
+        server 434428-web-01 52.91.146.27:80 check
         server 434428-web-02 52.91.202.244:80 check
