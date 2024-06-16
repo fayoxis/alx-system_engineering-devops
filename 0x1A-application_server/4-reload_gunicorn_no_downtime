@@ -1,1 +1,7 @@
-lets see
+#!/usr/bin/env bash
+# Gracefully reloads Gunicorn.
+
+pids=$(pgrep -f gunicorn)
+if [ -n "$pids" ]; then
+    kill -HUP $pids
+fi
