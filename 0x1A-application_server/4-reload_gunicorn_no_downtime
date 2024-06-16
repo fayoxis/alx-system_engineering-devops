@@ -1,5 +1,1 @@
-#!/usr/bin/env bash
-# Gracefully reloads Gunicorn.
 
-pids=$(pgrep gunicorn)
-kill -HUP $pids
