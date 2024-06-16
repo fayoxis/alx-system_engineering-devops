@@ -14,7 +14,9 @@ ExecStart = /usr/bin/env HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HB
 ExecReload = /bin/kill -s HUP $MAINPID
 ExecStop = /bin/kill -s TERM $MAINPID
 ExecStopPost = /bin/rm -rf /run/hbnb
-PrivateTmp = false 
-
+PrivateTmp = false
 [Install]
+
 WantedBy = multi-user.target
+
+
